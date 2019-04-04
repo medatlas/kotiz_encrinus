@@ -1,1 +1,60 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+html {
+    height: 98.5% !important;
+    margin: 0px !important;
+}
+
+body {
+    display: flex;
+    flex: 1;
+    height: 98.5% !important;
+    font-family: Roboto, sans-serif;
+    font-size: .8em;
+    font-weight: bold;
+}
+
+.horizontal-spacer-10 {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    min-width: 10px;
+    max-width: 10px;
+}
+
+.horizontal-spacer-16 {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    min-width: 16px;
+    max-width: 16px;
+}
+
+.vertical-spacer-10 {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    min-height: 10px;
+    max-height: 10px;
+}
+
+.vertical-spacer-16 {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    min-height: 16px;
+    max-height: 16px;
+}

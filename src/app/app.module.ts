@@ -1,6 +1,8 @@
+import { AuthGuard } from './service/auth.guard';
+import { AuthDialogComponent } from './ui/auth.dialog';
 import { DropZoneDirective } from './drop-zone.directive';
 import { FileUploadComponent } from './file-upload/file-upload.component';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,26 +11,64 @@ import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { FileSizePipe } from './file-size.pipe';
+import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
+import { MaterialModule } from './material.module';
+import { DocumentListComponent } from './ui/document.list';
+import { DocumentService } from './service/document.service';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import * as Hammer from 'hammerjs';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = {
+    // override hammerjs default configuration
+    swipe: { direction: Hammer.DIRECTION_ALL }
+  };
+}
+
+const firebaseUiAuthConfig: firebaseui.auth.Config = {
+  signInFlow: 'popup',
+  signInOptions: [
+    {
+      requireDisplayName: false,
+      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID
+    }
+  ],
+  tosUrl: 'http://localhost:4200'
+};
 
 @NgModule({
   declarations: [
     AppComponent,
     FileUploadComponent,
     FileSizePipe,
-    DropZoneDirective
+    DropZoneDirective,
+    AuthDialogComponent,
+    DocumentListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    MaterialModule,
     AngularFirestoreModule,
-    AngularFireAuthModule,
     AngularFireStorageModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig)
+    AngularFireDatabaseModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    BrowserAnimationsModule,
+    AngularFireAuthModule,
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [DocumentService, AuthGuard, {
+    provide: HAMMER_GESTURE_CONFIG,
+    useClass: MyHammerConfig
+  }],
+  bootstrap: [AppComponent],
+  entryComponents: [DocumentListComponent, AuthDialogComponent]
 })
 export class AppModule { }

@@ -1,0 +1,46 @@
+<div class="flex vertical layout">
+    <form>
+        <div class="flex vertical layout">
+
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <textarea matInput [(ngModel)]="description" name="description"></textarea>
+            </mat-form-field>
+
+            <div class="vertical layout">
+                <div class="flex horizontal layout justified">
+                    <button mat-raised-button (click)="selectFile()">Upload Document</button>
+                    <button mat-raised-button (click)="task.pause()" class="button is-warning"
+                        [disabled]="!isActive(snapshot | async)">Pause</button>
+                    <button mat-raised-button (click)="task.resume()" class="button is-info"
+                        [disabled]="!((snapshot | async)?.state === 'paused')">Resume</button>
+                    <button mat-raised-button (click)="task.cancel()" class="button is-danger"
+                        [disabled]="!isActive(snapshot | async)">Cancel</button>
+                </div>
+                <input #fileinput class="file-input" type="file" (change)="fileChangeEvent($event)" />
+            </div>
+        </div>
+    </form>
+
+    <div class=vertical-spacer-16></div>
+
+    <div class="vertical layout">
+        <mat-label>Progress</mat-label>
+        <div class=vertical-spacer-16></div>
+        <mat-progress-bar [value]="percentage | async"></mat-progress-bar>
+        <div class=vertical-spacer-16></div>
+    </div>
+
+    <div class="vertical layout" *ngFor="let doc of documents">
+        <div class="flex horizontal layout center justified">
+            <a [href]="doc.path" target="_blank" rel="external">{{doc.name}}</a>
+            <div class="horizontal layout center">
+                <button mat-raised-button (click)="delete(doc)">Delete</button>
+                <div class=horizontal-spacer-16></div>
+                <button mat-raised-button (click)="share(doc)">Share</button>
+            </div>
+        </div>
+        <mat-label>{{doc.description}}</mat-label>
+        <div class=vertical-spacer-16></div>
+    </div>
+</div>
