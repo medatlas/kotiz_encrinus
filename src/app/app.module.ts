@@ -1,3 +1,5 @@
+import { SignDialogComponent } from './ui/sign.dialog';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './service/auth.guard';
 import { AuthDialogComponent } from './ui/auth.dialog';
 import { DropZoneDirective } from './drop-zone.directive';
@@ -49,7 +51,8 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     FileSizePipe,
     DropZoneDirective,
     AuthDialogComponent,
-    DocumentListComponent
+    DocumentListComponent,
+    SignDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -64,11 +67,13 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AngularFireAuthModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
-  providers: [DocumentService, AuthGuard, {
-    provide: HAMMER_GESTURE_CONFIG,
-    useClass: MyHammerConfig
-  }],
+  providers: [
+    DocumentService,
+    AuthGuard,
+    HttpClient,
+    {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig}
+  ],
   bootstrap: [AppComponent],
-  entryComponents: [DocumentListComponent, AuthDialogComponent]
+  entryComponents: [DocumentListComponent, AuthDialogComponent, SignDialogComponent]
 })
 export class AppModule { }

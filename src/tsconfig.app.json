@@ -7,7 +7,15 @@
     ],
     "typeRoots": [
       "../node_modules/@types"
-    ]
+    ],
+    "paths": {
+      "stream": [
+        "node_modules/stream-browserify"
+      ],
+      "@angular/*": [
+        "node_modules/@angular/*"
+      ]
+    }
   },
   "exclude": [
     "test.ts",

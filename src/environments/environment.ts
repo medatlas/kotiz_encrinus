@@ -5,6 +5,24 @@
 export const environment = {
   production: false,
   firebaseConfig: {
+    apiKey: '',
+    authDomain: '',
+    databaseURL: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: ''
+  },
+  eosConfig: {
+    contractName: '',
+    contractSender: '',
+    network: {
+      protocol: '',
+      blockchain: '',
+      host: '',
+      port: '',
+      chainId: ''
+    },
+    eosOptions: {}
   }
 };
 

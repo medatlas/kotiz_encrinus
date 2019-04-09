@@ -4,5 +4,6 @@ export class Document {
     name: string;
     path: string;
     store: string;
+    hash: string;
     description: string;
 }
