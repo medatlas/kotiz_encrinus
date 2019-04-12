@@ -2,17 +2,22 @@
     <h2 mat-dialog-title>Sign</h2>
     <mat-dialog-content>
         <mat-list role="list">
-            <mat-list-item role="listitem" *ngFor="let account of accounts" (click)="selectedAccount = account">
-                {{account.name}}
-            </mat-list-item>
+            <div class="flex vertical layout">
+                <mat-list-item role="listitem">
+                    You are signing with this account
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    {{selectedAccount.name}}
+                </mat-list-item>
+            </div>
         </mat-list>
     </mat-dialog-content>
     <mat-dialog-actions>
         <div class="flex horizontal layout justified">
-            <button mat-mini-fab (click)="sign()" *ngIf="selectedAccount">
+            <button mat-raised-button (click)="sign()" *ngIf="selectedAccount">
                 <span>Sign</span>
             </button>
-            <button mat-mini-fab (click)="close()" class="close-button">
+            <button mat-raised-button (click)="close()" class="close-button">
                 <span>Cancel</span>
             </button>
         </div>

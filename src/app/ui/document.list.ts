@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { Document } from '../model/document';
 import { SignDialogComponent } from './sign.dialog';
-import * as SparkMD5 from 'spark-md5';
+import CryptoJS from 'crypto-js';
 
 const uuidv4 = require('uuid/v4');
 
@@ -102,7 +102,7 @@ export class DocumentListComponent implements OnInit {
                 reject(new DOMException('Problem parsing input file.'));
             };
             fileReader.onload = () => {
-                resolve(SparkMD5.ArrayBuffer.hash(fileReader.result));
+                resolve(CryptoJS.SHA256(fileReader.result).toString());
             };
             fileReader.readAsArrayBuffer(file);
         });
