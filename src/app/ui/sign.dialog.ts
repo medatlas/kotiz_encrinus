@@ -1,5 +1,4 @@
 import ScatterEOS from 'scatterjs-plugin-eosjs';
-import ScatterJS from 'scatterjs-core';
 import { Network, Account } from 'scatterjs-core';
 import { Component, Output, EventEmitter, OnInit, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -68,27 +67,20 @@ export class SignDialogComponent implements OnInit {
       content: ''
     };
 
-    this.scatter.getArbitrarySignature(this.scatter.identity.publicKey, data, 'Signing Request', true)
-      .then(signature => {
+    const transaction = {
+      actions: [
+        {
+          account: 'fincomeosone',
+          name: 'save',
+          authorization: [{ 'actor': this.selectedAccount.name, 'permission': this.selectedAccount.authority }],
+          data: data
+        }
+      ]
+    };
 
-        const transaction = {
-          actions: [
-            {
-              account: 'fincomeosone',
-              name: 'save',
-              authorization: [{ 'actor': this.selectedAccount.name, 'permission': this.selectedAccount.authority }],
-              data: data
-            }
-          ],
-          signatures: [signature]
-        };
-
-        this.eosClient.transaction(transaction).then(result => {
-          if (result) {
-            this.dialogRef.close();
-          }
-        });
-      });
+    this.scatter.requestSignature(transaction).then(tr => {
+      this.eosClient.transaction(tr);
+    });
   }
 
   close() {
