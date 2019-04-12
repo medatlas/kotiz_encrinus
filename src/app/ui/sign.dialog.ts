@@ -88,6 +88,8 @@ export class SignDialogComponent implements OnInit {
             this.dialogRef.close();
           }
         });
+      }, error => {
+        console.log(error);
       });
   }
 
