@@ -1,5 +1,3 @@
-import ScatterEOS from 'scatterjs-plugin-eosjs';
-import ScatterJS from 'scatterjs-core';
 import { Network, Account } from 'scatterjs-core';
 import { Component, Output, EventEmitter, OnInit, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -43,19 +41,16 @@ export class SignDialogComponent implements OnInit {
   ngOnInit() { }
 
   async _initScatter() {
-    (<any>window).ScatterJS.plugins(new ScatterEOS());
-    (<any>window).ScatterJS.connect('fincomeosone', { network }).then(connected => {
+    this.scatter = (<any>window).scatter;
 
-      if (connected) {
-        this.scatter = (<any>window).ScatterJS.scatter;
-        (<any>window).ScatterJS = null;
-
-        if (this.scatter) {
-          this.selectedAccount = this.scatter.identity.accounts[0];
-          this.eosClient = this.scatter.eos(network, Eos, eosOptions);
-        }
-      }
-    });
+    if (this.scatter) {
+      this.scatter.getIdentity({
+        accounts: [network]
+      }).then(identity => {
+        this.selectedAccount = identity.accounts[0];
+        this.eosClient = this.scatter.eos(network, Eos, eosOptions);
+      });
+    }
   }
 
   sign() {
@@ -68,29 +63,16 @@ export class SignDialogComponent implements OnInit {
       content: ''
     };
 
-    this.scatter.getArbitrarySignature(this.scatter.identity.publicKey, data, 'Signing Request', true)
-      .then(signature => {
+    const authorization = [{ 'actor': this.selectedAccount.name, 'permission': this.selectedAccount.authority }];
 
-        const transaction = {
-          actions: [
-            {
-              account: 'fincomeosone',
-              name: 'save',
-              authorization: [{ 'actor': this.selectedAccount.name, 'permission': this.selectedAccount.authority }],
-              data: data
-            }
-          ],
-          signatures: [signature]
-        };
-
-        this.eosClient.transaction(transaction).then(result => {
-          if (result) {
-            this.dialogRef.close();
-          }
-        });
-      }, error => {
-        console.log(error);
-      });
+    this.eosClient.contract('fincomeosone').then(contract =>
+      contract.save(data, { authorization })
+    ).then(result => {
+      console.log(result);
+      this.dialogRef.close();
+    }, error => {
+      console.log(error);
+    });
   }
 
   close() {
