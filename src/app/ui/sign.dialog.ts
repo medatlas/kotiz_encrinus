@@ -8,13 +8,6 @@ import Eos from 'eosjs';
 
 const network = Network.fromJson(environment.eosConfig.network);
 
-const eosOptions = {
-  expireInSeconds: 60,
-  sign: true,
-  broadcast: false,
-  chainId: environment.eosConfig.network.chainId
-};
-
 @Component({
   selector: 'fc-sign-dialog',
   templateUrl: './sign.dialog.html',
@@ -48,7 +41,7 @@ export class SignDialogComponent implements OnInit {
         accounts: [network]
       }).then(identity => {
         this.selectedAccount = identity.accounts[0];
-        this.eosClient = this.scatter.eos(network, Eos, eosOptions);
+        this.eosClient = this.scatter.eos(network, Eos, environment.eosConfig.network);
       });
     }
   }
@@ -65,7 +58,7 @@ export class SignDialogComponent implements OnInit {
 
     const authorization = [{ 'actor': this.selectedAccount.name, 'permission': this.selectedAccount.authority }];
 
-    this.eosClient.contract('fincomeosone').then(contract =>
+    this.eosClient.contract(environment.eosConfig.contractName).then(contract =>
       contract.save(data, { authorization })
     ).then(result => {
       console.log(result);

@@ -13,16 +13,21 @@ export const environment = {
     messagingSenderId: ''
   },
   eosConfig: {
-    contractName: '',
-    contractSender: '',
+    contractName: 'fincomeosone',
+    contractSender: 'fincomeosone',
     network: {
-      protocol: '',
-      blockchain: '',
-      host: '',
-      port: '',
-      chainId: ''
+      protocol: 'https',
+      blockchain: 'eos',
+      host: 'jungle2.cryptolions.io',
+      port: '443',
+      chainId: 'e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473'
     },
-    eosOptions: {}
+    eosOptions: {
+      expireInSeconds: 60,
+      sign: true,
+      broadcast: false,
+      chainId: 'e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473'
+    }
   }
 };
 
