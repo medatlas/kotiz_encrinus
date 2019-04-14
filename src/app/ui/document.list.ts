@@ -102,7 +102,8 @@ export class DocumentListComponent implements OnInit {
                 reject(new DOMException('Problem parsing input file.'));
             };
             fileReader.onload = () => {
-                resolve(CryptoJS.SHA256(fileReader.result).toString());
+                const wa = CryptoJS.lib.WordArray.create(fileReader.result);
+                resolve(CryptoJS.SHA256(wa).toString());
             };
             fileReader.readAsArrayBuffer(file);
         });
