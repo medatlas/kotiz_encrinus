@@ -41,7 +41,7 @@ export class SignDialogComponent implements OnInit {
         accounts: [network]
       }).then(identity => {
         this.selectedAccount = identity.accounts[0];
-        this.eosClient = this.scatter.eos(network, Eos, environment.eosConfig.network);
+        this.eosClient = this.scatter.eos(network, Eos, environment.eosConfig.eosOptions);
       });
     }
   }
